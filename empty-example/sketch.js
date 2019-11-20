@@ -1,54 +1,75 @@
 
+let dY;
+let dY01;
+let dY02;
+let dY03;
 
-let b;
-let anotherBall;
-let jffsdff;
+let sT;
+let sT01;
+let sT02;
 
-let jdflsf;
-let fjdlkasklsa;
-let fklsdfjfwkrfwdfasfdffsdfasfasdfewfrewfsdfsdfs;
 
 function setup() {
-  createCanvas(600, 600);
-
-  b = new beaches(0,100,"red")
-  anotherBall = new beaches (200,20,"green")
-  jffsdff = new beaches (300,20,"black")
+  createCanvas(1000, 1000);
+  //dynamic platforms below
+  dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50)
+  dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300)
+  //static plaforms below
+  sT = new staticPlatform(90,600,random(0,255))
+  sT01 = new staticPlatform(500,600,random(0,255))
+  sT02 = new staticPlatform(300,500,random(0,255))
 }
 
 function draw(){
-	background(220,100,200);
-  text("ari",30,30);
-  b.drawBall();
-  b.moveBall();
-  anotherBall.drawBall();
+background("white");
+
+
+	  dY.drawPlatform();
+    dY.movePlatform();
+	  dY01.drawPlatform();
+    dY01.movePlatform();
+
+    sT.drawPlatform();
+    sT01.drawPlatform();
+    sT02.drawPlatform();
+
 
 }
 
 
-class beaches {
+class staticPlatform {
   constructor(x,y,color) {
     this.x = x
     this.y = y
     this.color = color
   }
-  drawBall(){
-    stroke(0)
+  drawPlatform(){
     fill(this.color)
-    ellipse(this.x,this.y,10,10)
+    rect(this.x,this.y,150,30)
   }
-  moveBall(){
-    this.x = this.x+2
-    this.y = this.y+.5
   }
 
-}
-class sand {
+class dynamicPlatform {
 
-  constructor(x,y,color) {
-  this.x = x
-  this.y = y
-  this.color = color
+  constructor(x,y,color,speed,endParaX,startParaX) {
+    this.x = x
+    this.y = y
+    this.color = color
+    this.speed = speed
+    this.endParaX = endParaX
+    this.startParaX = startParaX
   }
-
+  drawPlatform(){
+    fill(this.color)
+    rect(this.x,this.y,150,30)
+  }
+  movePlatform(){
+    this.x += this.speed
+    if (this.x >= this.endParaX){
+      this.speed = -this.speed
+    }
+    else if (this.x <= this.startParaX) {
+      this.speed = -this.speed
+    }
+  }
 }
