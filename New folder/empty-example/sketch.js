@@ -1,6 +1,6 @@
-// let VelocityX = 0;
-// let VelocityY = 0;
-let gravity = 1;
+let VelocityX = 0;
+let VelocityY = 0;
+let gravity = 5;
 let friction = 0.9;
 let p1;
 let p2;
@@ -8,16 +8,13 @@ let p2;
 
 function setup() {
   createCanvas(1000, 1000);
-  p1 = new player(200,200,30,30,3,false,false,0,0)
-
+  p1 = new player(200,200,30,30,3,false,false)
+  line(10,800,900,800);
 }
 
 function draw() {
-  background(255);
   p1.drawMe();
   p1.moveMe();
-  line(10,845,900,845);
-
 }
 
 
@@ -27,7 +24,7 @@ function draw() {
 
 
 class player {
-  constructor(x,y,w,h,speed,jumping,grounded,velocityX,velocityY){
+  constructor(x,y,w,h,speed,jumping,grounded){
     this.x = x;
     this.y = y;
     this.w = w;
@@ -35,8 +32,6 @@ class player {
     this.speed = speed;
     this.jumping = jumping;
     this.grounded = grounded;
-    this.VelocityX = velocityX;
-    this.VelocityY = velocityY;
   }
 
 
@@ -45,23 +40,21 @@ class player {
     rect(this.x,this.y,this.w,this.h,10);
   }
   moveMe(){
-    print(this.VelocityY)
-
-    if (keyIsDown(32)) {
+    if (keyIsPressed === true && keyCode === 32) {
     // up arrow or space
-    if (this.jumping === false && this.grounded === true) {
+    if (this.jumping === false && this.grounded === false) {
         this.jumping = true;
         this.grounded = false;
-        this.VelocityY = -20;//how high to jump
+        this.VelocityY = -player.speed * 2.5;//how high to jump
     }
 }
-if (keyIsDown(68)) {
+if (keyIsPressed === true && keyCode === 68) {
     // right arrow
     if (this.VelocityX < this.speed) {
         this.VelocityX++;
     }
 }
-if (keyIsDown(65)) {
+if (keyIsPressed === true && keyCode === 65) {
     // left arrow
     if (this.VelocityX > -this.speed) {
         this.VelocityX--;
@@ -70,16 +63,12 @@ if (keyIsDown(65)) {
   if(this.grounded === true){
         this.VelocityY = 0;
    }
-   else{
-     this.VelocityY += gravity;
-   }
    this.VelocityX *= friction;
-
+   this.VeloctityY += gravity;
    this.x += this.VelocityX;
    this.y += this.VelocityY;
    if(this.y >= 799){
      this.grounded = true;
-     this.jumping = false;
    }
 
   }
