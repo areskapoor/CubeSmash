@@ -12,7 +12,9 @@ function preload() {
 //
 //   //create an animation from a sequence of numbered images
 //   //pass the first and the last file name and it will try to find the ones in between
-  ghost = loadAnimation('tim/tim001.png', 'tim/tim008.png');
+
+
+  ghost = loadAnimation('tim/yellowGunSmash1.png');
 
 }
 
@@ -78,7 +80,7 @@ class Avatar1 {
 
 	moveMe(){
     if (keyIsDown(UP_ARROW)) { //if you hold the up arrow, move up by speed
-       this.y -= this.speed+30;
+       this.y = this.y-20;
     }
     if (keyIsDown(37)) { //if you hold the up arrow, move up by speed
        this.x -= this.speed+30;

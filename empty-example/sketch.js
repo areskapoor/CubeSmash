@@ -18,7 +18,7 @@ function setup() {
 
 function draw(){
 	background(220,100,200);
-  text("ari",30,30);
+  text("hello",30,30);
   b.drawBall();
   b.moveBall();
   anotherBall.drawBall();
