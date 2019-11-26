@@ -25,6 +25,7 @@ function setup() {
   sT = new staticPlatform(90,600,random(0,255))
   sT01 = new staticPlatform(500,600,random(0,255))
   sT02 = new staticPlatform(300,500,random(0,255))
+  frameRate(60);
 }
 
 function draw(){
@@ -86,7 +87,7 @@ class dynamicPlatform {
 }
 class player {
   //p1 = new player(200,200,30,30,3,false,false,0,0)
-  constructor(x,y,w,h,speed,jumping,grounded,velocityX,velocityY,up,right,left){
+  constructor(x,y,w,h,speed,jumping,grounded,velocityX,velocityY,up,right,left,sprite){
     this.x = x;
     this.y = y;
     this.w = w;
@@ -99,12 +100,15 @@ class player {
     this.up = up;
     this.right = right;
     this.left = left;
+    this.sprite = sprite;
   }
 
 
 
   drawMe(){
     rect(this.x,this.y,this.w,this.h,10);
+    //animation(this.sprite,this.x, this.y,this.w, this.h)
+
   }
   moveMe(){
     print(this.VelocityY)
@@ -139,6 +143,7 @@ if (keyIsDown(this.left)) {
 
    this.x += this.VelocityX;
    this.y += this.VelocityY;
+   //need better way to do whats below
    if(this.y >= 500){
      this.grounded = true;
      this.jumping = false;
