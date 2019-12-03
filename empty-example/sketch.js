@@ -181,6 +181,7 @@ if (keyIsDown(this.left)) {
      }
      if(this.x >= platforms[i].x + platforms[i].w && this.x <= platforms[i].x){
        this.grounded = false;
+       console.log("hello")
        //code above tells the ball to fall with gravity when it's not on top of a platform
      }
      if(this.x >= platforms[i].x && this.x <= platforms[i].x + platforms[i].w && this.y <= platforms[i].y +30 && this.y >= platforms[i].y){
