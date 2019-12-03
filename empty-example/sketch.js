@@ -42,7 +42,7 @@ function setup() {
   platforms.push(sT01);
   sT02 = new staticPlatform(300,500,random(0,255),150)
   platforms.push(sT02);
-  sT03 = new staticPlatform(700,0,230,1500,"i am here")
+  sT03 = new staticPlatform(700,0,230,1500,)
   platforms.push(sT03);
   frameRate(60);
 }
@@ -69,7 +69,7 @@ line(10,845,900,845);
 
 
 class staticPlatform {
-  constructor(x,y,color,w,text) {
+  constructor(x,y,color,w,) {
     this.x = x
     this.y = y
     this.color = color
@@ -78,7 +78,6 @@ class staticPlatform {
   drawPlatform(){
     fill(this.color)
     rect(this.x,this.y,this.w,30)
-    text(this.text,50,50)
   }
   }
 
