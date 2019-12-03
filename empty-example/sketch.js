@@ -27,14 +27,14 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 800);
+  createCanvas(1440, 800);
   p1 = new player(200,200,30,30,3,false,false,0,0,87,68,65,red1,red2,1)
   p2 = new player(200,200,30,30,3,false,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
   //dynamic platforms below
-  dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50,150)
-  platforms.push(dY);
-  dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300,150)
-  platforms.push(dY01);
+  // dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50,150)
+  // platforms.push(dY);
+  // dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300,150)
+  // platforms.push(dY01);
   //static plaforms below
   sT = new staticPlatform(90,600,random(0,255),150)
   platforms.push(sT);
@@ -42,7 +42,7 @@ function setup() {
   platforms.push(sT01);
   sT02 = new staticPlatform(300,500,random(0,255),150)
   platforms.push(sT02);
-  sT03 = new staticPlatform(700,0,230,1500,)
+  sT03 = new staticPlatform(0,799,0,1000)
   platforms.push(sT03);
   frameRate(60);
 }
@@ -55,14 +55,15 @@ p2.drawMe();
 p2.moveMe();
 line(10,845,900,845);
 
-	  dY.drawPlatform();
-    dY.movePlatform();
-	  dY01.drawPlatform();
-    dY01.movePlatform();
+	  // dY.drawPlatform();
+    // dY.movePlatform();
+	  // dY01.drawPlatform();
+    // dY01.movePlatform();
 
     sT.drawPlatform();
     sT01.drawPlatform();
     sT02.drawPlatform();
+    sT03.drawPlatform();
 
 
 }
@@ -177,19 +178,39 @@ if (keyIsDown(this.left)) {
        //if(staticplatforms[i].x || staticplatforms[i].x > this.x > staticplatforms[i].x + 150 || staticplatforms[i].x){
        this.grounded = true;
        this.jumping = false;
+       console.log("is grounded")
 
      }
+<<<<<<< Updated upstream
+     // else {
+     //   this.grounded = false
+     // }
+     // if(this.x >= platforms[i].x + platforms[i].w && this.x <= platforms[i].x){
+     //   this.grounded = false;
+     //   console.log("not grounded")
+     //   //code above tells the ball to fall with gravity when it's not on top of a platform
+     // }
+     // if(this.x >= platforms[i].x && this.x <= platforms[i].x + platforms[i].w && this.y <= platforms[i].y +30 && this.y >= platforms[i].y){
+     //   this.grounded = false;
+     //   this.VelocityY = 0;
+     //   this.VelocityY += gravity;
+     //   console.log("we bouncin")
+     //   //code above allows ball to bounce in opposite y velocity when it collides with a platform
+     // }
+=======
      if(this.x >= platforms[i].x + platforms[i].w && this.x <= platforms[i].x){
        this.grounded = false;
-       console.log("hello")
+       console.log("not grounded")
        //code above tells the ball to fall with gravity when it's not on top of a platform
      }
-     if(this.x >= platforms[i].x && this.x <= platforms[i].x + platforms[i].w && this.y <= platforms[i].y +30 && this.y >= platforms[i].y){
+     if(this.x >= platforms[i].x && this.x <= platforms[i].x + platforms[i].w && this.y <= platforms[i].y + 30 && this.y >= platforms[i].y){
        this.grounded = false;
        this.VelocityY = 0;
        this.VelocityY += gravity;
+       console.log("bouncing")
        //code above allows ball to bounce in opposite y velocity when it collides with a platform
      }
+>>>>>>> Stashed changes
    }
 
    // if(this.y > staticPlatform.y){
