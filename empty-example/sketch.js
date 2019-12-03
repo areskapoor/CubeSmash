@@ -8,23 +8,42 @@ let sT;
 let sT01;
 let sT02;
 
-let gravity = 1;
+let gravity = .8;
 let friction = 0.9;
 let p1;
 let p2;
 
+let platforms = [];
+
+console.log(platforms.w)
+
+function preload() {
+
+  yellow1 = loadAnimation('yellowGunSmash1.png');
+  yellow2 = loadAnimation('yellowGunSmash2.png');
+  red1 = loadAnimation('redGunSmash1.png')
+  red2 = loadAnimation('redGunSmash2.png')
+
+}
 
 function setup() {
   createCanvas(1000, 800);
-  p1 = new player(200,200,30,30,3,false,false,0,0,87,68,65)
-  p2 = new player(200,200,30,30,3,false,false,0,0,UP_ARROW,39,37)
+  p1 = new player(200,200,30,30,3,false,false,0,0,87,68,65,red1,red2,1)
+  p2 = new player(200,200,30,30,3,false,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
   //dynamic platforms below
-  dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50)
-  dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300)
+  dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50,150)
+  platforms.push(dY);
+  dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300,150)
+  platforms.push(dY01);
   //static plaforms below
-  sT = new staticPlatform(90,600,random(0,255))
-  sT01 = new staticPlatform(500,600,random(0,255))
-  sT02 = new staticPlatform(300,500,random(0,255))
+  sT = new staticPlatform(90,600,random(0,255),150)
+  platforms.push(sT);
+  sT01 = new staticPlatform(500,600,random(0,255),150)
+  platforms.push(sT01);
+  sT02 = new staticPlatform(300,500,random(0,255),150)
+  platforms.push(sT02);
+  sT03 = new staticPlatform(700,0,230,1500,"i am here")
+  platforms.push(sT03);
   frameRate(60);
 }
 
@@ -50,30 +69,33 @@ line(10,845,900,845);
 
 
 class staticPlatform {
-  constructor(x,y,color) {
+  constructor(x,y,color,w,text) {
     this.x = x
     this.y = y
     this.color = color
+    this.w = w
   }
   drawPlatform(){
     fill(this.color)
-    rect(this.x,this.y,150,30)
+    rect(this.x,this.y,this.w,30)
+    text(this.text,50,50)
   }
   }
 
 class dynamicPlatform {
 
-  constructor(x,y,color,speed,endParaX,startParaX) {
+  constructor(x,y,color,speed,endParaX,startParaX,w) {
     this.x = x
     this.y = y
     this.color = color
     this.speed = speed
     this.endParaX = endParaX
     this.startParaX = startParaX
+    this.w = w
   }
   drawPlatform(){
     fill(this.color)
-    rect(this.x,this.y,150,30)
+    rect(this.x,this.y,this.w,30)
   }
   movePlatform(){
     this.x += this.speed
@@ -87,7 +109,7 @@ class dynamicPlatform {
 }
 class player {
   //p1 = new player(200,200,30,30,3,false,false,0,0)
-  constructor(x,y,w,h,speed,jumping,grounded,velocityX,velocityY,up,right,left,sprite){
+  constructor(x,y,w,h,speed,jumping,grounded,velocityX,velocityY,up,right,left,sprite,sprite2,direction){
     this.x = x;
     this.y = y;
     this.w = w;
@@ -101,17 +123,22 @@ class player {
     this.right = right;
     this.left = left;
     this.sprite = sprite;
+    this.sprite2 = sprite2;
+    this.direction = direction;
   }
 
 
 
   drawMe(){
-    rect(this.x,this.y,this.w,this.h,10);
-    //animation(this.sprite,this.x, this.y,this.w, this.h)
-
+    if (this.direction === 1){
+    animation(this.sprite, this.x, this.y)
+    }
+    if (this.direction === 2){
+    animation(this.sprite2, this.x, this.y)
+    }
   }
   moveMe(){
-    print(this.VelocityY)
+
 
     if (keyIsDown(this.up)) {
     // w key
@@ -122,12 +149,14 @@ class player {
     }
 }
 if (keyIsDown(this.right)) {
+    this.direction = 2;
     // d key
     if (this.VelocityX < this.speed) {
         this.VelocityX++;
     }
 }
 if (keyIsDown(this.left)) {
+    this.direction = 1;
     // a key
     if (this.VelocityX > -this.speed) {
         this.VelocityX--;
@@ -143,11 +172,33 @@ if (keyIsDown(this.left)) {
 
    this.x += this.VelocityX;
    this.y += this.VelocityY;
-   //need better way to do whats below
-   if(this.y >= 500){
-     this.grounded = true;
-     this.jumping = false;
+
+   for (let i = 0; i < platforms.length; i++){
+     if(this.y > platforms[i].y-15 && this.x > platforms[i].x && this.x < platforms[i].x+platforms[i].w){
+       //if(staticplatforms[i].x || staticplatforms[i].x > this.x > staticplatforms[i].x + 150 || staticplatforms[i].x){
+       this.grounded = true;
+       this.jumping = false;
+
+     }
+     if(this.x >= platforms[i].x + platforms[i].w && this.x <= platforms[i].x){
+       this.grounded = false;
+       //code above tells the ball to fall with gravity when it's not on top of a platform
+     }
+     if(this.x >= platforms[i].x && this.x <= platforms[i].x + platforms[i].w && this.y <= platforms[i].y +30 && this.y >= platforms[i].y){
+       this.grounded = false;
+       this.VelocityY = 0;
+       this.VelocityY += gravity;
+       //code above allows ball to bounce in opposite y velocity when it collides with a platform
+     }
    }
 
+   // if(this.y > staticPlatform.y){
+   //   this.grounded = true;
+   //   this.jumping = false;
+   // }
+   // if(this.y > 700){
+   //   this.grounded = true;
+   //   this.jumping = false;
+   // }
   }
 }
