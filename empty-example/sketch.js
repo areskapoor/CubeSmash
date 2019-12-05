@@ -7,6 +7,7 @@ let dY03;
 let sT;
 let sT01;
 let sT02;
+let sT03;
 
 let gravity = .8;
 let friction = 0.9;
@@ -32,9 +33,9 @@ function setup() {
   p2 = new player(200,200,30,30,3,false,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
   //dynamic platforms below
   dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50,150)
-  platforms.push(dY);
+  //platforms.push(dY);
   dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300,150)
-  platforms.push(dY01);
+  //platforms.push(dY01);
   //static plaforms below
   sT = new staticPlatform(90,600,random(0,255),150)
   platforms.push(sT);
@@ -42,7 +43,7 @@ function setup() {
   platforms.push(sT01);
   sT02 = new staticPlatform(300,500,random(0,255),150)
   platforms.push(sT02);
-  sT03 = new staticPlatform(700,0,230,1500,)
+  sT03 = new staticPlatform(0,790,230,1000)
   platforms.push(sT03);
   frameRate(60);
 }
@@ -63,13 +64,14 @@ line(10,845,900,845);
     sT.drawPlatform();
     sT01.drawPlatform();
     sT02.drawPlatform();
+    sT03.drawPlatform();
 
 
 }
 
 
 class staticPlatform {
-  constructor(x,y,color,w,) {
+  constructor(x,y,color,w) {
     this.x = x
     this.y = y
     this.color = color
@@ -172,33 +174,19 @@ if (keyIsDown(this.left)) {
    this.x += this.VelocityX;
    this.y += this.VelocityY;
 
+   // if this.y >
    for (let i = 0; i < platforms.length; i++){
-     if(this.y > platforms[i].y-15 && this.x > platforms[i].x && this.x < platforms[i].x+platforms[i].w){
+     if(this.y > platforms[0].y-30 && this.y < platforms[0].y+15 && this.x > platforms[0].x && this.x < platforms[0].x+platforms[0].w){
        //if(staticplatforms[i].x || staticplatforms[i].x > this.x > staticplatforms[i].x + 150 || staticplatforms[i].x){
        this.grounded = true;
        this.jumping = false;
 
      }
-     if(this.x >= platforms[i].x + platforms[i].w && this.x <= platforms[i].x){
+     else {
+       console.log("not grounded")
        this.grounded = false;
-       console.log("hello")
-       //code above tells the ball to fall with gravity when it's not on top of a platform
-     }
-     if(this.x >= platforms[i].x && this.x <= platforms[i].x + platforms[i].w && this.y <= platforms[i].y +30 && this.y >= platforms[i].y){
-       this.grounded = false;
-       this.VelocityY = 0;
-       this.VelocityY += gravity;
-       //code above allows ball to bounce in opposite y velocity when it collides with a platform
+       this.jumping = true;
      }
    }
-
-   // if(this.y > staticPlatform.y){
-   //   this.grounded = true;
-   //   this.jumping = false;
-   // }
-   // if(this.y > 700){
-   //   this.grounded = true;
-   //   this.jumping = false;
-   // }
   }
 }
