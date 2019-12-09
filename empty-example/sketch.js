@@ -1,4 +1,5 @@
 
+
 let dY;
 let dY01;
 let dY02;
@@ -7,7 +8,6 @@ let dY03;
 let sT;
 let sT01;
 let sT02;
-let sT03;
 
 let gravity = .8;
 let friction = 0.9;
@@ -16,7 +16,7 @@ let p2;
 
 let platforms = [];
 
-console.log(platforms.w)
+
 
 function preload() {
 
@@ -29,13 +29,13 @@ function preload() {
 
 function setup() {
   createCanvas(1000, 800);
-  p1 = new player(200,200,30,30,3,false,false,0,0,87,68,65,red1,red2,1)
-  p2 = new player(200,200,30,30,3,false,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
+  p1 = new player(200,200,30,30,3,false,0,0,87,68,65,red1,red2,1)
+  p2 = new player(200,200,30,30,3,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
   //dynamic platforms below
   dY = new dynamicPlatform(50,100,random(0,255),random(.5,2),150,50,150)
-  //platforms.push(dY);
+  platforms.push(dY);
   dY01 = new dynamicPlatform(300,300,random(0,255),random(.5,2),400,300,150)
-  //platforms.push(dY01);
+  platforms.push(dY01);
   //static plaforms below
   sT = new staticPlatform(90,600,random(0,255),150)
   platforms.push(sT);
@@ -43,18 +43,18 @@ function setup() {
   platforms.push(sT01);
   sT02 = new staticPlatform(300,500,random(0,255),150)
   platforms.push(sT02);
-  sT03 = new staticPlatform(0,790,230,1000)
+  sT03 = new staticPlatform(700,0,230,1500,)
   platforms.push(sT03);
   frameRate(60);
 }
 
 function draw(){
-background(255);
-p1.drawMe();
-p1.moveMe();
-p2.drawMe();
-p2.moveMe();
-line(10,845,900,845);
+  background(255);
+  p1.drawMe();
+  p1.moveMe();
+  p2.drawMe();
+  p2.moveMe();
+  line(10,845,900,845);
 
 	  dY.drawPlatform();
     dY.movePlatform();
@@ -64,14 +64,13 @@ line(10,845,900,845);
     sT.drawPlatform();
     sT01.drawPlatform();
     sT02.drawPlatform();
-    sT03.drawPlatform();
 
 
 }
 
 
 class staticPlatform {
-  constructor(x,y,color,w) {
+  constructor(x,y,color,w,) {
     this.x = x
     this.y = y
     this.color = color
@@ -110,13 +109,13 @@ class dynamicPlatform {
 }
 class player {
   //p1 = new player(200,200,30,30,3,false,false,0,0)
-  constructor(x,y,w,h,speed,jumping,grounded,velocityX,velocityY,up,right,left,sprite,sprite2,direction){
+  constructor(x,y,w,h,speed,grounded,velocityX,velocityY,up,right,left,sprite,sprite2,direction){
     this.x = x;
     this.y = y;
     this.w = w;
     this.h = h;
     this.speed = speed;
-    this.jumping = jumping;
+    //this.jumping = jumping;
     this.grounded = grounded;
     this.VelocityX = velocityX;
     this.VelocityY = velocityY;
@@ -138,55 +137,71 @@ class player {
     animation(this.sprite2, this.x, this.y)
     }
   }
+
   moveMe(){
+    // THE WORLD FORCES
+    this.VelocityX *= friction;
+    if(this.grounded == true){
+      this.VelocityY = 0;
+    }
+    else if(this.grounded == false){
+      this.VelocityY += gravity;
+    }
 
+   //THE CHARACTER CHANGING LOCATION
+    this.x += this.VelocityX;
+    this.y += this.VelocityY;
 
+    //JUMP
     if (keyIsDown(this.up)) {
     // w key
-    if (this.jumping === false && this.grounded === true) {
-        this.jumping = true;
+    if (this.grounded === true) {
+         print("I'm jumping")
         this.grounded = false;
         this.VelocityY = -20;//how high to jump
+          this.y += this.VelocityY;
+      }
     }
-}
-if (keyIsDown(this.right)) {
-    this.direction = 2;
+
+    //SLIDE RIGHT
+    if (keyIsDown(this.right)) {
+      this.direction = 2;
     // d key
-    if (this.VelocityX < this.speed) {
-        this.VelocityX++;
-    }
-}
-if (keyIsDown(this.left)) {
-    this.direction = 1;
+        if (this.VelocityX < this.speed) {
+            this.VelocityX++;
+          }
+        }
+    //SLIDE LEFT
+    if (keyIsDown(this.left)) {
+      this.direction = 1;
     // a key
-    if (this.VelocityX > -this.speed) {
+      if (this.VelocityX > -this.speed) {
         this.VelocityX--;
     }
-}
-  if(this.grounded === true){
-        this.VelocityY = 0;
-   }
-   else{
-     this.VelocityY += gravity;
-   }
-   this.VelocityX *= friction;
+  }
 
-   this.x += this.VelocityX;
-   this.y += this.VelocityY;
-
-   // if this.y >
-   for (let i = 0; i < platforms.length; i++){
-     if(this.y > platforms[0].y-30 && this.y < platforms[0].y+15 && this.x > platforms[0].x && this.x < platforms[0].x+platforms[0].w){
-       //if(staticplatforms[i].x || staticplatforms[i].x > this.x > staticplatforms[i].x + 150 || staticplatforms[i].x){
+ //CHECK IF YOU'RE ON A PLATFORM
+     if(this.x>=sT.x && this.x<=sT.x+sT.w && this.y>= sT.y-10){
        this.grounded = true;
-       this.jumping = false;
+     }
 
+     else if(this.x>=sT01.x && this.x<=sT01.x+sT01.w && this.y>= sT01.y-10){
+       this.grounded = true;
      }
-     else {
-       console.log("not grounded")
+     else if(this.x>=sT02.x && this.x<=sT02.x+sT02.w && this.y>= sT02.y-10){
+       this.grounded = true;
+     }
+
+     else if(this.x>=sT03.x && this.x<=sT03.x+sT03.w && this.y>= sT03.y-10){
+       this.grounded = true;
+     }
+
+
+     else{
        this.grounded = false;
-       this.jumping = true;
      }
-   }
+
+
+
   }
 }
