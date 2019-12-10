@@ -15,9 +15,13 @@ let p1;
 let p2;
 
 let platforms = [];
+let bullets = [];
+let p2bullets = [];
+let b;
+let t;
+let firerate = 0;
 
-
-
+let health = 10
 function preload() {
 
   yellow1 = loadAnimation('yellowGunSmash1.png');
@@ -28,7 +32,7 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1000, 800);
+  createCanvas(1200, 800);
   p1 = new player(200,200,30,30,3,false,0,0,87,68,65,red1,red2,1)
   p2 = new player(200,200,30,30,3,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
   //dynamic platforms below
@@ -43,7 +47,7 @@ function setup() {
   platforms.push(sT01);
   sT02 = new staticPlatform(300,500,random(0,255),150)
   platforms.push(sT02);
-  sT03 = new staticPlatform(700,0,230,1500,)
+  sT03 = new staticPlatform(0,780,230,1300)
   platforms.push(sT03);
   frameRate(60);
 }
@@ -64,7 +68,53 @@ function draw(){
     sT.drawPlatform();
     sT01.drawPlatform();
     sT02.drawPlatform();
+    sT03.drawPlatform();
 
+
+
+  for(let i =0; i<bullets.length;i++){
+    bullets[i].drawbullet();
+    bullets[i].shoot();
+  }
+
+}
+
+function keyPressed(){
+  if (keyCode === 32){
+    b = new bullet(p1.x,p1.y,p1.direction)
+       bullets.push(b);
+  }
+  if (keyCode === 190){
+    t = new bullet(p2.x,p2.y,p2.direction)
+       bullets.push(t);
+  }
+}
+
+
+
+class bullet{
+  constructor(x,y,direction){
+    this.x = x
+    this.y = y
+    this.direction = direction;
+    this.aimcone = random(-0.8,0.8);
+  }
+
+  drawbullet(){
+      ellipse(this.x,this.y,8,5);
+
+  }
+
+  shoot(){
+
+    if (this.direction === 1){
+    this.x -= 9;
+  }
+    if (this.direction === 2){
+      this.x +=9
+    }
+    this.y += this.aimcone;
+  }
 
 }
 
@@ -204,4 +254,22 @@ class player {
 
 
   }
+}
+
+class healthbar {
+  constructor(x,y,w,h,color) {
+    this.x = x
+    this.y = y
+    this.w = w
+    this.h = h
+    this.color = color
+  }
+  drawHealth() {
+    fill(this.color);
+    rect(this.x, this.y, this.w, this.h);
+  }
+  changeHealth() {
+    if
+  }
+
 }
