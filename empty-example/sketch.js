@@ -30,32 +30,34 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(1200, 820);
-  p1 = new player(180,500,30,30,3,false,0,0,87,68,65,red1,red2,1)
-  p2 = new player(950,500,30,30,3,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
+  createCanvas(1200+240, 820);
+  p1 = new player(180,450,30,30,3,false,0,0,87,68,65,red1,red2,1)
+  p2 = new player(950+240,450,30,30,3,false,0,0,UP_ARROW,39,37,yellow1,yellow2,1)
   //dynamic platforms below
   dY = new dynamicPlatform(90,190,"black",random(.5,2),190,90,150)
   platforms.push(dY);
-  dY01 = new dynamicPlatform(430,300,"black",random(.5,2),600,400,150)
+  dY01 = new dynamicPlatform(430+240,300,"black",random(.5,2),600+240,400+240,150)
   platforms.push(dY01);
-  dY02 = new dynamicPlatform(900,190,"black",random(-.5,-2),900,800,150)
+  dY02 = new dynamicPlatform(900+240,190,"black",random(-.5,-2),900+240,800+240,150)
   platforms.push(dY02);
   //static plaforms below
-  sT = new staticPlatform(90,600,"black",150,15)
+  sT = new staticPlatform(90,470,"black",150,15)
   platforms.push(sT);
-  sT01 = new staticPlatform(900,600,"black",150,15)
+  sT01 = new staticPlatform(900+240,600,"black",150,15)
   platforms.push(sT01);
-  sT02 = new staticPlatform(300,470,"black",150,15)
+  sT02 = new staticPlatform(300+240,470,"black",150,15)
   platforms.push(sT02);
-  sT04 = new staticPlatform(700,470,"black",150,15)
+  sT04 = new staticPlatform(700+240,470,"black",150,15)
   platforms.push(sT04);
-  sT05 = new staticPlatform(480,700,"black",150,15)
+  sT05 = new staticPlatform(480+240,700,"black",150,15)
   platforms.push(sT05);
-  sT03 = new staticPlatform(0,790,"black",1300,30)
+  sT06 = new staticPlatform(300,600,"black",150,15)
+  platforms.push(sT06);
+  sT03 = new staticPlatform(0,790,"black",1440,30)
   platforms.push(sT03);
 
   redHealth = new healthbar(80,50,200,25,"red",10)
-  yellowHealth = new healthbar(930,50,200,25,"yellow",10)
+  yellowHealth = new healthbar(930+240,50,200,25,"yellow",10)
   frameRate(60);
 }
 
@@ -63,17 +65,17 @@ function setup() {
 function draw(){
 
   background(255);
-  if(frameCount <= 500){
+  if(frameCount <= 350){
     textSize(52);
     text("Welcome To GunSmash",350, 400)
   }
-  if(frameCount <= 500 && frameCount >= 120){
+  if(frameCount <= 350 && frameCount >= 120){
     textSize(25);
     text("Red Player Is Controlled By W,A,D And Uses 'SPACE' To Shoot",250, 200)
     text("Yellow Player Is Controlled By Up,Left And Right Arrow, And Uses '.' To Shoot",250, 500)
   }
 
-  if(frameCount >= 500){
+  if(frameCount >= 350){
   p1.drawMe();
   p1.moveMe();
   p2.drawMe();
@@ -93,6 +95,7 @@ function draw(){
     sT03.drawPlatform();
     sT04.drawPlatform();
     sT05.drawPlatform();
+    sT06.drawPlatform();
 
     redHealth.changeHealth();
     yellowHealth.changeHealth();
@@ -127,7 +130,7 @@ function keyPressed(){
     b = new bullet1(p1.x,p1.y,p1.direction,"grey",false)
        bullets1.push(b);
   }
-  if (keyCode === 190){
+  if (keyCode === 18){
     t = new bullet(p2.x,p2.y,p2.direction,"grey",false)
        bullets.push(t);
   }
@@ -367,6 +370,12 @@ class player {
          this.y = sT05.y-15
        // }
      }
+     else if(this.x>=sT06.x && this.x<=sT06.x+sT06.w && this.y>= sT06.y-30 && this.y<= sT06.y){
+       this.grounded = true;
+       // if (this.y <= sT03.y){
+         this.y = sT06.y-15
+       // }
+     }
      else if(this.x>=dY.x && this.x<=dY.x+dY.w && this.y>= dY.y-15 && this.y<= dY.y){
        this.grounded = true;
        // if (this.y <= dY.y){
@@ -385,6 +394,7 @@ class player {
          this.y = dY02.y-15
        // }
      }
+
 
 
      else{
