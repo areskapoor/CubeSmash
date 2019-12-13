@@ -67,12 +67,12 @@ function draw(){
   background(255);
   if(frameCount <= 350){
     textSize(52);
-    text("Welcome To GunSmash",350, 400)
+    text("Welcome To CubeSmash",450, 400)
   }
   if(frameCount <= 350 && frameCount >= 120){
     textSize(25);
-    text("Red Player Is Controlled By W,A,D And Uses 'SPACE' To Shoot",250, 200)
-    text("Yellow Player Is Controlled By Up,Left And Right Arrow, And Uses '.' To Shoot",250, 500)
+    text("Red Cube Is Controlled By W,A,D And Uses 'SPACE' To Shoot",250, 200)
+    text("Yellow Cube Is Controlled By Up,Left And Right Arrow, And Uses '.' To Shoot",250, 500)
   }
 
   if(frameCount >= 350){
